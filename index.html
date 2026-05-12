@@ -1,12 +1,611 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Personal Profile - Alex Chen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的个人网站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .avatar-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 6px solid #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .profile-name-left {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .profile-school {
+            font-size: 14px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 20px;
+        }
+
+        .profile-name {
+            font-size: 48px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .profile-subtitle {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+
+        .content-grid {
+            margin-top: 80px;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .section-content {
+            color: #555;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .section-content p {
+            margin-bottom: 15px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            fill: #667eea;
+        }
+
+        .contact-text {
+            color: #555;
+            font-size: 16px;
+        }
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 30px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 14px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #667eea;
+        }
+
+        .timeline-date {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            color: #555;
+        }
+
+        .team-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .team-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .team-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .team-section {
+            margin-bottom: 20px;
+        }
+
+        .team-subtitle {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .team-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* 新布局样式 */
+        .layout-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .left-sidebar {
+            position: fixed;
+            top: 0;
+            left: 40px;
+            width: 280px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        .right-content {
+            flex: 1;
+            margin-left: 430px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .avatar-container {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .avatar {
+            position: relative;
+            right: -40px;
+        }
+
+        .profile-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .profile-name-left {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .profile-school {
+            font-size: 14px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .nav-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .nav-btn {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: #667eea;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        
+        .profile-name-header {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 40px 30px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-name {
+            font-size: 42px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+
+        .content-grid {
+            padding: 40px;
+        }
+
+        .section-card {
+            margin-bottom: 60px;
+        }
+
+        @media (max-width: 968px) {
+            .layout-container {
+                flex-direction: column;
+            }
+
+            .left-sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                box-shadow: none;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            }
+
+            .right-content {
+                margin-left: 0;
+            }
+
+            .nav-bar {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                flex: 1;
+                min-width: 150px;
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .avatar-container {
+                padding: 30px 20px;
+            }
+
+            .nav-bar {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                min-width: auto;
+                max-width: none;
+            }
+
+            .content-grid {
+                padding: 20px;
+            }
+
+            .profile-name {
+                font-size: 28px;
+            }
+
+            .profile-subtitle {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .profile-name {
+                font-size: 36px;
+            }
+
+            .profile-subtitle {
+                font-size: 20px;
+            }
+
+            .avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .section-card {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .profile-name-header {
+                margin-top: 100px;
+                margin-bottom: 40px;
+            }
+
+            .profile-name {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>你好，世界！</h1>
-    <p>欢迎来到我的第一个个人网站。这里是使用 GitHub Pages 搭建的。</p>
+    <div class="layout-container">
+        <!-- 左侧固定区域 -->
+        <div class="left-sidebar">
+            <div class="avatar-container">
+                <div class="avatar">
+                    <img src="https://t.tutu.to/img/LoyhK" alt="picture-e04996235bebfe6a525291d37a296b28.jpg" border="0" />
+                </div>
+                <div class="profile-info">
+                    <h3 class="profile-name-left">guanze Lu</h3>
+                    <p class="profile-school"><a href="https://neu.edu.cn" target="_blank">Northeastern University</a></p>
+                </div>
+                <nav class="nav-bar">
+                    <button class="nav-btn active" data-target="personal-info">Personal Information</button>
+                    <button class="nav-btn" data-target="learning-journey">Learning Journey</button>
+                    <button class="nav-btn" data-target="collaboration">Collaboration & Contribution</button>
+                    <button class="nav-btn" data-target="contact">Contact Information</button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- 右侧滚动区域 -->
+        <div class="right-content">
+            <div class="profile-name-header">
+                <h1 class="profile-name">guanze Lu (卢冠泽)</h1>
+            </div>
+
+            <div class="content-grid">
+                <div class="section-card" id="personal-info">
+                    <h2 class="section-title">Personal Information</h2>
+                    <div class="section-content">
+                        <p>I am currently a freshman and a new member of the RayInnovation Team led by <a href="http://faculty.neu.edu.cn/yury/" target="_blank">Professor Yu Ruiyun</a>, where I have joined the Computer Vision project group.</p>
+                        <p>My programming foundation stems from both coursework and self-directed practice. In my programming class, I independently designed and implemented a Coffee Procurement Management System using Python with a command-line interface. This system handles coffee bean information management, CRUD operations for procurement orders, and basic inventory updates. As my first complete project from requirement analysis to code implementation, it helped me grasp the significant gap between building "a single function" and architecting "a complete system."</p>
+                        <p>Furthermore, I participated in the 17th Lanqiao Cup National Software and Information Technology Professional Talent Competition (2025). Although it was my debut in algorithm contests, the preparation process allowed me to systematically study fundamental algorithms and data structures—such as sorting, recursion, and basic dynamic programming. I also developed the habit of "analyzing time complexity before coding." This experience made me realize that while code correctness is the baseline, efficiency and robustness are capabilities that require continuous training.</p>
+                    </div>
+                </div>
+
+                <div class="section-card" id="learning-journey">
+                    <h2 class="section-title">Learning Journey</h2>
+                    <div class="section-content">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">Fall Semester - Freshman Year</div>
+                                <div class="timeline-content">
+                                    <p>Studied the fundamentals of C programming and established a basic understanding of low-level concepts such as variables, control flow, and pointers.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">Winter Break</div>
+                                <div class="timeline-content">
+                                    <p>Self-learned the basic syntax of Python and, through C++, gained an initial understanding of object-oriented programming concepts, including classes, inheritance, and encapsulation.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">Spring Semester - Freshman Year</div>
+                                <div class="timeline-content">
+                                    <p>Coursework shifted to Java, where I further deepened my understanding of object-oriented mechanisms, including interfaces, polymorphism, and exception handling.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">Current Period</div>
+                                <div class="timeline-content">
+                                    <p>Started exploring and actually installed conversational AI programming tools such as Claude Code, using them to assist in developing small applications. Through this experience, I gained an initial appreciation of the value of AI-assisted programming in rapid prototyping.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card" id="collaboration">
+                    <h2 class="section-title">Team Collaboration & Contribution</h2>
+                    <div class="section-content">
+                        <h3 style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 15px;">Expected Role in the Team</h3>
+                        <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">I hope to start with the foundational work in the team and gradually take on more challenging tasks. At this stage, the roles I expect include:</p>
+                        <ul style="color: #666; line-height: 1.6; margin-left: 20px; margin-bottom: 20px;">
+                            <li style="margin-bottom: 8px;">Front-end Development Assistance: Based on my current learning of HTML/CSS/JavaScript, assist in implementing page layout and interactive logic</li>
+                            <li style="margin-bottom: 8px;">Testing Feedback and Bug Recording: Participate in functional testing, submit issue reproduction steps following a standardized format, and help locate problem boundaries</li>
+                            <li style="margin-bottom: 8px;">Code Assistance and Debugging: Under the guidance of experienced senior students, assist in debugging simple modules and learn standardized code review processes</li>
+                        </ul>
+
+                        <h3 style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 15px;">What I Can Do for the Team</h3>
+                        <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">I can take on the following specific tasks without making excuses or procrastinating:</p>
+                        <ul style="color: #666; line-height: 1.6; margin-left: 20px;">
+                            <li style="margin-bottom: 8px;">Organize meeting minutes and sync them to the team documentation repository</li>
+                            <li style="margin-bottom: 8px;">Write technical posts or learning notes to document technical points from team projects</li>
+                            <li style="margin-bottom: 8px;">Take responsibility for a simple but detail-oriented front-end module (give me clear requirements and one week, and I will complete it)</li>
+                            <li style="margin-bottom: 8px;">Proactively report progress and raise issues promptly when encountering obstacles, rather than struggling silently</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section-card" id="contact">
+                    <h2 class="section-title">Contact Information</h2>
+                    <div class="section-content">
+                        <div class="contact-grid">
+                            <div class="contact-item">
+                                <svg class="contact-icon" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span class="contact-text">Wechat: lgz_0614_</span>
+                            </div>
+                            <div class="contact-item">
+                                <svg class="contact-icon" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                                </svg>
+                                <span class="contact-text">QQ: 3687575552</span>
+                            </div>
+                            <div class="contact-item">
+                                <svg class="contact-icon" viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
+                                <span class="contact-text">Email: luguanze@mails.neu.edu.cn</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取所有导航按钮和对应的目标元素
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const sections = {
+            'personal-info': document.getElementById('personal-info'),
+            'learning-journey': document.getElementById('learning-journey'),
+            'collaboration': document.getElementById('collaboration'),
+            'contact': document.getElementById('contact')
+        };
+
+        // 点击导航按钮时的平滑滚动
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                const targetSection = sections[targetId];
+
+                if (targetSection) {
+
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+
+    </script>
 </body>
 </html>
